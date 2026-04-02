@@ -1,5 +1,5 @@
 ---
-name: mongodb-naming-conventions
+name: database/mongodb-naming-conventions
 description: >-
   Applies MongoDB and application-layer naming conventions for documents,
   collections, fields, and ID mapping. Use when designing schemas, writing

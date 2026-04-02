@@ -4,7 +4,9 @@ description: >-
   Enforces one conceptual name for every identifier across front-end, back-end,
   and database: same tokens and meaning everywhere, varying only by required
   casing per context (camelCase, kebab-case, snake_case, PascalCase, etc.) and
-  purposeful affixes (e.g. Vm, Dto).
+  purposeful affixes (e.g. Vm, Dto). Database field casing is store-specific
+  (e.g. snake_case columns vs MongoDB camelCase in documents—use the matching
+  database skill).
   Improves searchability (grep, IDE search, code review) by keeping one
   vocabulary across the stack. Treat as high-priority and strict. Use for any
   naming, refactors, new APIs, models, components, routes, columns, or when the
@@ -28,7 +30,7 @@ For every field, type, resource, flag, and action:
 
 1. Choose a single **canonical sequence of name parts** (words / abbreviations agreed for that concept).
 2. Reuse that sequence **in every layer**, changing only what each layer requires:
-   - **Casing and separators:** e.g. `orderStatus` (TS/JS), `order_status` (PostgreSQL), `order-status` (kebab URL segments when applicable).
+   - **Casing and separators:** e.g. `orderStatus` (TS/JS); `order_status` in **PostgreSQL** columns; `orderStatus` / `placedAt` in **MongoDB** stored documents (camelCase per that skill); `order-status` (kebab URL segments when applicable). Relational vs document stores use different **storage** casing—always apply the database skill for the store in use, not a single global “DB = snake_case” rule.
    - **Lawful structural variants from storage or routing skills:** e.g. SQL `product_id` and app `productId` share the same parts `product` + `id`; do not rename the concept per layer.
 
 The **meaning** of each part is fixed across the stack. Serialization, ORMs, and mappers translate **shape**, not **vocabulary**. That stability is what makes cross-layer search reliable.
@@ -47,7 +49,9 @@ The **meaning** of each part is fixed across the stack. Serialization, ORMs, and
 | JS/TS classes, components, types, enums | PascalCase | `OrderCard`, `UserService` |
 | HTTP paths, CSS custom properties, many static assets, some config | kebab-case | `/api/order-status`, `--order-status` |
 | Source file names | Project / framework convention | e.g. `OrderCard.tsx` (common for React components) or kebab-case file names where the repo standard requires it |
-| Python modules/functions (PEP 8), Ruby, SQL identifiers per project | snake_case | `order_status`, `fetch_user_by_id` |
+| Python modules/functions (PEP 8), Ruby | snake_case | `order_status`, `fetch_user_by_id` |
+| PostgreSQL / SQL columns (`database/postgresql-naming-conventions`) | snake_case | `order_status`, `product_id`, `placed_at` |
+| MongoDB document fields stored in the database (`database/mongodb-naming-conventions`) | camelCase | `orderStatus`, `placedAt`, `productId` |
 | Constants (many languages) | SCREAMING_SNAKE | `MAX_RETRIES` |
 
 - Prefer the **official style** of the runtime or library (e.g. framework docs, ORM column mapping conventions) over personal preference.
@@ -80,11 +84,13 @@ When a **genuine second concept** exists (e.g. **Account** vs **User** as differ
 
 ## 4. Alignment with other skills in this repository
 
+**Storage casing is store-specific:** PostgreSQL examples in this file use SQL-style `snake_case` in the database layer; MongoDB uses **camelCase in stored documents**. That is intentional—pair work with `database/postgresql-naming-conventions` or `database/mongodb-naming-conventions`, not both at once for the same persistence layer.
+
 | Skill | Role |
 | :--- | :--- |
 | `domain-naming-conventions` | Chooses **what** the business calls things (ubiquitous language). This skill enforces **one** of those choices everywhere. |
 | `database/postgresql-naming-conventions` | SQL casing, `entity_id`, column explicitness. Apply those rules **on top of** the same logical parts (e.g. `product_id` ↔ `productId`). |
-| `database/mongodb-naming-conventions` | Document and field casing. Same logical names; storage format per that skill. |
+| `database/mongodb-naming-conventions` | Document and field casing. Same logical names; storage format per that skill (often camelCase in the DB as well as the app). |
 
 If two skills appear to conflict, **preserve one conceptual vocabulary** and satisfy each layer’s formatting rules without renaming the concept.
 
@@ -92,10 +98,17 @@ If two skills appear to conflict, **preserve one conceptual vocabulary** and sat
 
 ## 5. Examples
 
-**Good — one concept, shape varies**
+**Good — one concept, shape varies (PostgreSQL)**
 
 - Concept: placement time for an order.
-  - DB: `placed_at`
+  - DB column: `placed_at`
+  - API / app: `placedAt`
+  - UI variable: `placedAt`
+
+**Good — same concept (MongoDB; storage matches typical JS style)**
+
+- Concept: placement time for an order.
+  - Stored document field: `placedAt`
   - API / app: `placedAt`
   - UI variable: `placedAt`
 
@@ -115,7 +128,7 @@ If two skills appear to conflict, **preserve one conceptual vocabulary** and sat
 
 ## 6. Agent checklist
 
-1. When adding or renaming anything, define the **canonical part sequence** once and mirror it across UI, server, DB, and contracts—using **context-appropriate casing** (camelCase, kebab-case, snake_case, PascalCase, etc.) per language, framework, and lib—not inventing mixed styles in the same layer.
+1. When adding or renaming anything, define the **canonical part sequence** once and mirror it across UI, server, DB, and contracts—using **context-appropriate casing** per language, framework, lib, and **the active persistence skill** (PostgreSQL vs MongoDB)—not inventing mixed styles in the same layer.
 2. Reject or flag **synonym substitutions** across layers unless the user explicitly introduces a **new** domain concept.
 3. Allow **affixes** only when they encode a real, stable role (`Dto`, `Request`, `Vm`, etc.) and keep the **root** identical.
 4. After mapping layers, **grep** or search the root token: results should read as one story, not three dialects—this is the practical check for searchability.

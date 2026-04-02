@@ -1,5 +1,5 @@
 ---
-name: postgresql-naming-conventions
+name: database/postgresql-naming-conventions
 description: >-
   Applies PostgreSQL and SQL naming conventions for tables, columns, keys, and
   booleans (explicit naming, JOIN-friendly keys, searchability). Use when

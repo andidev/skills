@@ -1,7 +1,7 @@
 ---
 name: app-naming-conventions
 description: >-
-  Enforces monorepo application naming (e.g. Nx) by platform or role. New or
+  Enforces monorepo application naming (e.g. Turborepo or Nx) by platform or role. New or
   renamed apps use a suffix: -webapp (browser), -desktopapp (desktop), -app (iOS
   and Android), -androidapp (Android-only), -iosapp (iOS-only), or -server
   (backend API / Node server). Use when scaffolding apps, renaming projects,

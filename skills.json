@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "name": "app-naming-conventions",
+      "path": "app-naming-conventions/SKILL.md",
+      "description": "Enforces monorepo application naming (e.g. Turborepo or Nx) by platform or role. New or renamed apps use a suffix: -webapp (browser), -desktopapp (desktop), -app (iOS and Android), -androidapp (Android-only), -iosapp (iOS-only), or -server (backend API / Node server). Use when scaffolding apps, renaming projects, reviewing structure, or when the user mentions apps, webapp, desktop, mobile, or server."
+    },
+    {
+      "name": "domain-naming-conventions",
+      "path": "domain-naming-conventions/SKILL.md",
+      "description": "Standardizes naming for domain entities, APIs, and persistence boundaries using ubiquitous language (DDD) and consistent cross-layer patterns. Use when defining models, designing APIs, mapping database fields to application types, architecting systems, refactoring toward domain vocabulary, or when the user mentions entity names, DDD, ubiquitous language, or domain-driven naming."
+    },
+    {
+      "name": "general-naming-conventions",
+      "path": "general-naming-conventions/SKILL.md",
+      "description": "Enforces one conceptual name for every identifier across front-end, back-end, and database: same tokens and meaning everywhere, varying only by required casing per context (camelCase, kebab-case, snake_case, PascalCase, etc.) and purposeful affixes (e.g. Vm, Dto). Database field casing is store-specific (e.g. snake_case columns vs MongoDB camelCase in documents—use the matching database skill). Improves searchability (grep, IDE search, code review) by keeping one vocabulary across the stack. Treat as high-priority and strict. Use for any naming, refactors, new APIs, models, components, routes, columns, or when the user asks for consistent naming, ubiquitous identifiers, cross-stack alignment, or searchable code."
+    },
+    {
+      "name": "mongodb-naming-conventions",
+      "path": "mongodb-naming-conventions/SKILL.md",
+      "description": "Applies MongoDB-specific naming: collections, document fields, _id mapping (UUID v7), and nested documents. Use when designing schemas, Mongoose/ODM models, migrations, indexes, or when the user mentions MongoDB naming, collection names, _id mapping, UUID v7, or document field conventions. Pair with general-naming-conventions and domain-naming-conventions for cross-stack vocabulary and DB↔app↔API boundaries."
+    },
+    {
+      "name": "postgresql-naming-conventions",
+      "path": "postgresql-naming-conventions/SKILL.md",
+      "description": "Applies PostgreSQL/SQL naming: snake_case columns, explicit names for JOIN clarity (entity_id), UUID v7 primary/foreign keys, booleans (is_/has_/…), and anti-stuttering rules in relational schemas. Use when designing schemas, migrations, SQL, ORM models, or when the user mentions PostgreSQL naming, keys, or SQL style. Pair with general-naming-conventions and domain-naming-conventions for vocabulary and persistence↔app↔API mapping."
+    }
+  ]
+}
